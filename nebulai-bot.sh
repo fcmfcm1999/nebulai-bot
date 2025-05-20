@@ -1,8 +1,8 @@
 #!/bin/bash
 
 NEBULAI_DIR="./nebulai-bot"
-LOG_FILE="$NEBULAI_DIR/nebulai.log"
-ENV_FILE="$NEBULAI_DIR/.env"
+LOG_FILE="./nebulai.log"
+ENV_FILE="./.env"
 PM2_NAME="nebulai-bot"
 
 clone_repo_if_needed() {
