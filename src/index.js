@@ -22,22 +22,22 @@ function isTokenExpired(token) {
 }
 
 async function main() {
-    const token = process.env.NEBULAI_TOKEN
-    let computeToken = ''
+    const token = process.env.TOKEN
+    let jwtToken = process.env.JWT_TOKEN
     let result1 = ''
     let result2 = ''
     let taskId = ''
     let count = 0
     while (true) {
-        if (isTokenExpired(computeToken)) {
-            computeToken = await getComputeToken(token)
+        if (isTokenExpired(jwtToken)) {
+            jwtToken = await getComputeToken(token)
         }
-        const data = await submitTask(result1, result2, taskId, computeToken)
+        const data = await submitTask(result1, result2, taskId, jwtToken)
         if (data.calc_status) {
             console.log('Submit task successfully / 任务计算提交成功')
             console.log('Start to calculate next task / 开始下一轮计算')
             if (count % 10 === 0) {
-                const userInfo = await queryUserInfo(computeToken)
+                const userInfo = await queryUserInfo(jwtToken)
                 console.log(`Account ${userInfo.email} has mined ${userInfo.finish_point} now`)
             }
             count = count + 1

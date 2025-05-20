@@ -4,6 +4,7 @@ NEBULAI_DIR="./nebulai-bot"
 LOG_FILE="./nebulai.log"
 ENV_FILE="./.env"
 PM2_NAME="nebulai-bot"
+DEFAULT_INVITE="ghHaK5"
 
 clone_repo_if_needed() {
   if [ ! -d "$NEBULAI_DIR" ]; then
@@ -16,7 +17,7 @@ clone_repo_if_needed() {
 
 login_and_write_token() {
   if [ -f "$ENV_FILE" ]; then
-    EXISTING_TOKEN=$(grep "^NEBULAI_TOKEN=" "$ENV_FILE" | cut -d '=' -f2-)
+    EXISTING_TOKEN=$(grep "^TOKEN=" "$ENV_FILE" | cut -d '=' -f2-)
     if [ -n "$EXISTING_TOKEN" ]; then
       echo "🔐 检测到已有 Token，跳过登录步骤"
       return
@@ -47,8 +48,24 @@ login_and_write_token() {
     exit 1
   fi
 
-  echo "✅ 登录成功，写入 .env"
-  echo "NEBULAI_TOKEN=$TOKEN" > "$ENV_FILE"
+  echo "获取 jwtToken..."
+  JWT_RES=$(curl -s -X POST https://nebulai.network/open_compute/login/token \
+    -H "accept: application/json" \
+    -H "authorization: Bearer $TOKEN" \
+    -H "content-type: application/json" \
+    -d '{}')
+
+  JWT_TOKEN=$(echo "$JWT_RES" | grep -o '"jwt":"[^"]*' | cut -d '"' -f4)
+
+  if [ -z "$JWT_TOKEN" ]; then
+    echo "jwtToken 获取失败。退出。"
+    exit 1
+  fi
+
+  echo "TOKEN=$TOKEN" > "$ENV_FILE"
+  echo "JWT_TOKEN=$JWT_TOKEN" >> "$ENV_FILE"
+  echo "EMAIL=$EMAIL" >> "$ENV_FILE"
+  echo "登录成功，已写入 .env 文件。"
 }
 
 ensure_pm2_installed() {
@@ -58,6 +75,30 @@ ensure_pm2_installed() {
   else
     echo "✅ pm2 已安装"
   fi
+}
+
+submit_invite_code() {
+  if [ -f "$ENV_FILE" ]; then
+    TOKEN=$(grep "^TOKEN=" "$ENV_FILE" | cut -d '=' -f2)
+    JWT_TOKEN=$(grep "^JWT_TOKEN=" "$ENV_FILE" | cut -d '=' -f2)
+  fi
+
+  if [ -z "$JWT_TOKEN" ]; then
+    echo "找不到 JWT_TOKEN，无法提交邀请码。"
+    return
+  fi
+
+  echo "请输入邀请码（默认：$DEFAULT_INVITE）:"
+  read -r INVITE
+  INVITE=${INVITE:-$DEFAULT_INVITE}
+
+  curl -s -X POST https://nebulai.network/open_compute/set/invite_by \
+    -H "Content-Type: application/json" \
+    -H "authorization: Bearer $TOKEN" \
+    -H "token: $JWT_TOKEN" \
+    -d "{\"invite_by\":\"$INVITE\"}" > /dev/null
+
+  echo "邀请码已提交：$INVITE"
 }
 
 echo "请选择操作："
