@@ -1,4 +1,4 @@
-const { submitTask, queryUserInfo, getComputeToken } = require('./apis/nebulaiApi.js')
+const { submitTask, queryUserInfo, getComputeToken, startTask } = require('./apis/nebulaiApi.js')
 const { calculateResult } = require('./matrix.js')
 require('dotenv').config()
 
@@ -32,6 +32,7 @@ function isExpiredOver24Hours(isoDateStr) {
 async function main() {
     const token = process.env.TOKEN
     let jwtToken = process.env.JWT_TOKEN
+    await startTask(token, jwtToken)
     let result1 = ''
     let result2 = ''
     let taskId = ''
@@ -41,8 +42,8 @@ async function main() {
             jwtToken = await getComputeToken(token)
         }
         const userInfo = await queryUserInfo(jwtToken)
-        if (userInfo.CreatedAt == userInfo.UpdatedAt || isExpiredOver24Hours(userInfo.UpdatedAt)) {
-            await startTasks(token, jwtToken)
+        if (isExpiredOver24Hours(userInfo.UpdatedAt)) {
+            await startTask(token, jwtToken)
         }
         const data = await submitTask(result1, result2, taskId, jwtToken)
         if (data.calc_status) {

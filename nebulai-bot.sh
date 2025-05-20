@@ -114,6 +114,7 @@ case $choice in
     clone_repo_if_needed
     cd "$NEBULAI_DIR" || exit
     login_and_write_token
+    submit_invite_code
     npm install
     echo "🚀 正在启动 nebulai..."
     pm2 start "node src/index.js" --name "$PM2_NAME" --log "$LOG_FILE"

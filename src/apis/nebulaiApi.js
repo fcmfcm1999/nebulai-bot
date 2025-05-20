@@ -122,7 +122,7 @@ async function startTask(token, jwtToken) {
     }
 
     try {
-        const response = await axios.post(url, {}, { headers })
+        const response = await axios.post(url, null, { headers })
         if (response.status === 200) {
             console.log("Start task successfully / 开始任务")
             return response.data
