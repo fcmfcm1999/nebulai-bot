@@ -51,7 +51,7 @@ async function main() {
             console.log('Start to calculate next task / 开始下一轮计算')
             if (count % 10 === 0) {
                 const userInfo = await queryUserInfo(jwtToken)
-                console.log(`Account ${userInfo.email} has mined ${userInfo.finish_point} now`)
+                console.log(`账号${userInfo.email} 现在已经挖到了 ${userInfo.finish_point} NEB`)
             }
             count = count + 1
         }

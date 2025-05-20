@@ -68,6 +68,15 @@ login_and_write_token() {
   echo "登录成功，已写入 .env 文件。"
 }
 
+print_author_info() {
+  echo "=========================="
+  echo " 作者: 0x范特西"
+  echo " Twitter / X: @0Xiaofan22921"
+  echo " "
+  echo " 更多脚本分享欢迎关注我的推特~"
+  echo "=========================="
+}
+
 ensure_pm2_installed() {
   if ! command -v pm2 &> /dev/null; then
     echo "🔧 未检测到 pm2，正在安装..."
@@ -100,6 +109,8 @@ submit_invite_code() {
 
   echo "邀请码已提交：$INVITE"
 }
+
+print_author_info
 
 echo "请选择操作："
 echo "1. 安装并运行 nebulai-bot"
