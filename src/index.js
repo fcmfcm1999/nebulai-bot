@@ -21,6 +21,14 @@ function isTokenExpired(token) {
     }
 }
 
+function isExpiredOver24Hours(isoDateStr) {
+  const inputDate = new Date(isoDateStr);
+  const now = new Date();
+  const diffMs = now - inputDate;
+  const diffHours = diffMs / (1000 * 60 * 60);
+  return diffHours > 24;
+}
+
 async function main() {
     const token = process.env.TOKEN
     let jwtToken = process.env.JWT_TOKEN
@@ -31,6 +39,10 @@ async function main() {
     while (true) {
         if (isTokenExpired(jwtToken)) {
             jwtToken = await getComputeToken(token)
+        }
+        const userInfo = await queryUserInfo(jwtToken)
+        if (userInfo.CreatedAt == userInfo.UpdatedAt || isExpiredOver24Hours(userInfo.UpdatedAt)) {
+            await startTasks(token, jwtToken)
         }
         const data = await submitTask(result1, result2, taskId, jwtToken)
         if (data.calc_status) {

@@ -4,7 +4,7 @@ NEBULAI_DIR="./nebulai-bot"
 LOG_FILE="./nebulai.log"
 ENV_FILE="./.env"
 PM2_NAME="nebulai-bot"
-DEFAULT_INVITE="ghHaK5"
+DEFAULT_INVITE="7BPKiD"
 
 clone_repo_if_needed() {
   if [ ! -d "$NEBULAI_DIR" ]; then
