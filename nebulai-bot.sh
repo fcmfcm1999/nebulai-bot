@@ -102,9 +102,9 @@ submit_invite_code() {
 }
 
 echo "请选择操作："
-echo "1. 安装并运行 nebulai"
+echo "1. 安装并运行 nebulai-bot"
 echo "2. 查看日志"
-echo "3. 停止运行 nebulai"
+echo "3. 停止运行 nebulai-bot"
 echo "4. 删除 nebulai-bot"
 read -p "输入选项 (1-4): " choice
 
