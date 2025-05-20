@@ -2,7 +2,7 @@
 该项目实现了[nebulai](https://nebulai.network/opencompute?invite_by=7BPKiD)项目的自动挂机功能。
 
 ## 预览
-![preview](./images/nebulai.jpg)
+![preview](./images/nebulai.png)
 ## 功能
 
 + 只需第一次运行脚本时使用邮箱验证码登录，之后无需额外操作
