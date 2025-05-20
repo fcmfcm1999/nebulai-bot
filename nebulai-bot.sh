@@ -8,7 +8,7 @@ PM2_NAME="nebulai-bot"
 clone_repo_if_needed() {
   if [ ! -d "$NEBULAI_DIR" ]; then
     echo "📥 克隆 nebulai-bot 项目..."
-    git clone https://github.com/yourrepo/nebulai-bot.git "$NEBULAI_DIR" || { echo "❌ 克隆失败"; exit 1; }
+    git clone https://github.com/fcmfcm1999/nebulai-bot.git "$NEBULAI_DIR" || { echo "❌ 克隆失败"; exit 1; }
   else
     echo "📁 项目已存在，跳过克隆"
   fi

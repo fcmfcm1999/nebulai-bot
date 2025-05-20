@@ -2,7 +2,7 @@ const {submitTask, queryUserInfo} = require('./apis/nebulaiApi.js')
 const {calculateResult} = require('./matrix.js')
 
 async function main() {
-    const token = process.env.token
+    const token = process.env.NEBULAI_TOKEN
     console.log(token)
     return 
     let result1 = ''
