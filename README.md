@@ -1,6 +1,8 @@
 # nebulai-bot
 该项目实现了[nebulai](https://nebulai.network/opencompute?invite_by=7BPKiD)项目的自动挂机功能。
 
+**更多脚本分享, 关注我的[X](https://x.com/0Xiaofan22921)**
+
 ## 预览
 ![preview](./images/nebulai.png)
 ## 功能
