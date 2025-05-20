@@ -15,6 +15,13 @@ clone_repo_if_needed() {
 }
 
 login_and_write_token() {
+  if [ -f "$ENV_FILE" ]; then
+    EXISTING_TOKEN=$(grep "^NEBULAI_TOKEN=" "$ENV_FILE" | cut -d '=' -f2-)
+    if [ -n "$EXISTING_TOKEN" ]; then
+      echo "🔐 检测到已有 Token，跳过登录步骤"
+      return
+    fi
+  fi
   echo "请输入你的邮箱："
   read EMAIL
 
@@ -68,7 +75,7 @@ case $choice in
     login_and_write_token
     npm install
     echo "🚀 正在启动 nebulai..."
-    pm2 start "node -r dotenv/config index.js" --name "$PM2_NAME" --log "$LOG_FILE"
+    pm2 start "node src/index.js" --name "$PM2_NAME" --log "$LOG_FILE"
     ;;
 
   2)
