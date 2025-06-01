@@ -23,30 +23,33 @@ login_and_write_token() {
       return
     fi
   fi
-  echo "请输入你的邮箱："
-  read EMAIL
-
-  echo "📨 正在发送验证码到 $EMAIL ..."
-  curl -s 'https://nebulai.network/api/front/login/email' \
-    -H 'accept: application/json, text/plain, */*' \
-    -H 'content-type: application/json' \
-    --data-raw "{\"email\":\"$EMAIL\"}" > /dev/null
-
-  echo "请输入你收到的验证码："
-  read CODE
-
-  echo "✅ 正在验证验证码..."
-  LOGIN_RESPONSE=$(curl -s 'https://nebulai.network/api/front/login/auth_email' \
-    -H 'accept: application/json, text/plain, */*' \
-    -H 'content-type: application/json' \
-    --data-raw "{\"email\":\"$EMAIL\",\"auth_code\":\"$CODE\"}")
-
-  TOKEN=$(echo "$LOGIN_RESPONSE" | grep -o '"token":"[^"]*' | cut -d':' -f2 | tr -d '"')
-
-  if [ -z "$TOKEN" ]; then
-    echo "❌ 登录失败，请检查验证码或邮箱"
-    exit 1
-  fi
+  ## seed email need to pass cloudflare
+  # echo "请输入你的邮箱："
+  # read EMAIL
+  #
+  # echo "📨 正在发送验证码到 $EMAIL ..."
+  # curl -s 'https://nebulai.network/api/front/login/email' \
+  #   -H 'accept: application/json, text/plain, */*' \
+  #   -H 'content-type: application/json' \
+  #   --data-raw "{\"email\":\"$EMAIL\"}" > /dev/null
+  #
+  # echo "请输入你收到的验证码："
+  # read CODE
+  #
+  # echo "✅ 正在验证验证码..."
+  # LOGIN_RESPONSE=$(curl -s 'https://nebulai.network/api/front/login/auth_email' \
+  #   -H 'accept: application/json, text/plain, */*' \
+  #   -H 'content-type: application/json' \
+  #   --data-raw "{\"email\":\"$EMAIL\",\"auth_code\":\"$CODE\"}")
+  #
+  # TOKEN=$(echo "$LOGIN_RESPONSE" | grep -o '"token":"[^"]*' | cut -d':' -f2 | tr -d '"')
+  #
+  # if [ -z "$TOKEN" ]; then
+  #   echo "❌ 登录失败，请检查验证码或邮箱"
+  #   exit 1
+  # fi
+  echo "请输入你的token(打开浏览器，在nebulai页面，登录后打开控制台输入: localStorage.getItem('loginToken'); 来获取)"
+  read TOKEN
 
   echo "获取 jwtToken..."
   JWT_RES=$(curl -s -X POST https://nebulai.network/open_compute/login/token \
