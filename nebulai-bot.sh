@@ -50,6 +50,7 @@ login_and_write_token() {
   # fi
   echo "请输入你的token(打开浏览器，在nebulai页面，登录后打开控制台输入: localStorage.getItem('loginToken'); 来获取)"
   read TOKEN
+  TOKEN=$(echo "$TOKEN" | sed "s/^['\"]//;s/['\"]$//")
 
   echo "获取 jwtToken..."
   JWT_RES=$(curl -s -X POST https://nebulai.network/open_compute/login/token \
